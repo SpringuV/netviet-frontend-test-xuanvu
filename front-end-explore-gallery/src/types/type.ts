@@ -8,3 +8,5 @@ export type ItemType = {
     author: string,
     likes: number,
 }
+
+export type AlertStatus = 'success' | 'error' | 'info' | 'warning';
