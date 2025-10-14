@@ -18,7 +18,7 @@ export const useItems = () => {
     }
 }
 
-export function useItem(id?: number) {
+export function useItem(id?: string) {
 
     const { data, error, isLoading, mutate } = useSWR<ItemType>(id ? `http://localhost:3001/items/${id}` : null, fetcher);
     const itemData = Array.isArray(data) ? data[0] : data;

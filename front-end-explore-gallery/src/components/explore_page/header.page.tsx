@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ModeToggle } from "../toggle-mode";
 // <a href="..."> <button> <input>, <textarea>, <select></select>
 const HeaderExplorePage = () => {
     const pathName = usePathname();
@@ -16,7 +17,7 @@ const HeaderExplorePage = () => {
                         <div>EXPLORE GALERY</div>
                     </div>
                 </Link>
-                <div className="w-1/4 flex justify-center items-center">
+                <div className="flex justify-center items-center">
                     <FontAwesomeIcon icon={faSearch} />
                     {!is_create_page && (
                         <Link href={"/create"} className="ml-2 text-white py-1 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-colors duration-300 ease-in-out flex justify-center items-center">
@@ -24,6 +25,9 @@ const HeaderExplorePage = () => {
                             <span>Create New</span>
                         </Link>
                     )}
+                    <div className="ml-2">
+                        <ModeToggle />
+                    </div>
                 </div>
             </div>
         </>

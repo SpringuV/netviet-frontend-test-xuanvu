@@ -37,6 +37,7 @@ const FilterCategoryAndSort = (props: PropsType) => {
                             <SelectContent>
                                 <SelectItem value="trending">Trending</SelectItem>
                                 <SelectItem value="latest">Latest</SelectItem>
+                                <SelectItem value="oldest">Oldest</SelectItem>
                                 <SelectItem value="a-z">A - Z</SelectItem>
                                 <SelectItem value="z-a">Z - A</SelectItem>
                             </SelectContent>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import ExploreLayout from "@/layout/explore.layout";
+import { ThemeProvider } from "@/components/themes-provider";
 
 config.autoAddCss = false;
 
@@ -28,13 +29,20 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <ExploreLayout>
-                    {children}
-                </ExploreLayout>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <ExploreLayout>
+                        {children}
+                    </ExploreLayout>
+                </ThemeProvider>
             </body>
         </html>
     );

@@ -21,10 +21,17 @@ const ProductsPage = () => {
         }
         // sort
         if (sort) {
-            if (sort === 'a-z') items = items.sort((a: ItemType, b: ItemType) => a.title.localeCompare(b.title))
-            else if (sort === 'z-a') items = items.sort((a: ItemType, b: ItemType) => b.title.localeCompare(a.title))
-            else if (sort === 'latest') items = items.sort((a: ItemType, b: ItemType) => b.id - a.id)
-            else if (sort === 'trending') items = items.sort((a: ItemType, b: ItemType) => b.likes - a.likes)
+            if (sort === 'a-z') {
+                items = items.sort((a: ItemType, b: ItemType) => a.title.localeCompare(b.title))
+            } else if (sort === 'z-a') {
+                items = items.sort((a: ItemType, b: ItemType) => b.title.localeCompare(a.title))
+            } else if (sort === 'latest') {
+                items = items.sort((a: ItemType, b: ItemType) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+            } else if (sort === 'oldest') {
+                items = items.sort((a: ItemType, b: ItemType) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+            } else if (sort === 'trending') {
+                items = items.sort((a: ItemType, b: ItemType) => b.likes - a.likes)
+            }
         }
         return items;
     }, [sort, category, data]);

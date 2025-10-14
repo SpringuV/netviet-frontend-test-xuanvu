@@ -1,5 +1,5 @@
 export type ItemType = {
-    id: number,
+    id: string,
     title: string,
     image: string,
     category: string,
@@ -7,6 +7,7 @@ export type ItemType = {
     description: string,
     author: string,
     likes: number,
+    created_at: string,
 }
 
 export type AlertStatus = 'success' | 'error' | 'info' | 'warning';

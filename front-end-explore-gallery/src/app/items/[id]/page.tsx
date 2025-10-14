@@ -10,7 +10,7 @@ const ItemDetailPage = () => {
     const [liking, setLiking] = useState(false);
     const router = useRouter();
     const paramString = useParams();
-    const id = Number(paramString.id);
+    const id = String(paramString.id);
 
     // Fetch dữ liệu item cụ thể
     const { data: itemData, isError: isItemError, isLoading: isItemLoading, mutate: mutateItem, } = useItem(id);
@@ -22,10 +22,9 @@ const ItemDetailPage = () => {
         isLoading: isAllLoading,
     } = useItems();
 
-    // Handle error state
     if (isItemError) return notFound();
 
-    // Handle loading state - chỉ show loading khi KHÔNG có data
+    // show loading khi k có data
     if (isItemLoading && !itemData) {
         return <div className="text-center py-10">Loading...</div>;
     }
@@ -35,24 +34,23 @@ const ItemDetailPage = () => {
         return <div className="text-center py-10">No data found</div>;
     }
 
-    const relatedItems = allItems?.filter((relate: ItemType) => (relate.category === itemData.category) && (Number(relate.id) !== id)) || [];
-    console.log("Related Items: ", relatedItems);
+    const relatedItems = allItems?.filter((relate: ItemType) => (relate.category === itemData.category) && relate.id !== id) || [];
     const handleLike = async () => {
         if (liking) return; // tránh double click
         setLiking(true);
 
-        // Optimistic update: tăng likes ngay lập tức
+        // Optimistic update
         mutateItem({ ...itemData, likes: itemData.likes + 1 }, false);
 
         try {
             // Gọi PATCH lên server
-            await fetch(`http://localhost:3001/items?id=${id}`, {
+            await fetch(`http://localhost:3001/items/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ likes: itemData.likes + 1 }),
             });
 
-            // Revalidate: đồng bộ lại từ server
+            // Revalidate
             mutateItem();
         } catch (e) {
             console.error(e);
@@ -63,24 +61,26 @@ const ItemDetailPage = () => {
         }
     };
 
-    const handleOnClick = (id: number) => {
+    const handleOnClick = (id: string) => {
         router.push(`/items/${id}`);
     };
 
     return (
         <>
             <div className="p-6 max-w-5xl mx-auto">
+                <h1 className="text-3xl font-semibold mb-2">{itemData.title}</h1>
                 <img
                     src={itemData.image}
                     alt={itemData.title}
-                    className="w-full rounded-2xl mb-4"
+                    className="w-full rounded-2xl mb-4 h-[70vh] object-cover"
                 />
-                <h1 className="text-3xl font-semibold mb-2">{itemData.title}</h1>
-                <p className="text-gray-500 mb-4">{itemData.category}</p>
+
+                <p className="text-gray-500 mb-4"><span className="text-black font-semibold">Category:</span> {itemData.category}</p>
                 <p className="text-lg mb-4">{itemData.description}</p>
 
                 {itemData?.tags && (
                     <div className="flex gap-2 mb-4">
+                        <span className="text-black font-semibold">Tags:</span>
                         {itemData.tags.split(',').map((tag: string, index: number) => (
                             <span
                                 key={index}
@@ -93,14 +93,18 @@ const ItemDetailPage = () => {
                 )}
 
                 <div className="flex justify-between items-center text-gray-600">
-                    <span>Author: {itemData.author}</span>
-                    <button
-                        onClick={handleLike}
-                        disabled={liking}
-                        className={`text-lg ${liking ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'} transition`}
-                    >
-                        ❤️ {itemData.likes}
-                    </button>
+                    <span><span className="text-black font-semibold">Author:</span> {itemData.author}</span>
+                    <div>
+                        
+                        <button
+                            onClick={handleLike}
+                            disabled={liking}
+                            className={`text-base ${liking ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'} transition-all duration-300 mr-3 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white px-4 py-1 rounded-lg`}
+                        >
+                            Favorite
+                        </button>
+                        <span className="text-black font-semibold mr-2">❤️ {itemData.likes}</span>
+                    </div>
                 </div>
             </div>
 

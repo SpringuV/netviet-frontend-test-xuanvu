@@ -1,0 +1,24 @@
+json-server --watch database.json --port 3001
+npm install -g json-server
+// "author": [
+    //     "Alice Nguyen",
+    //     "John Doe",
+    //     "Maria Santos",
+    //     "David Tran",
+    //     "Emma Brown",
+    //     "Minh Le",
+    //     "Sophia Lee",
+    //     "Alex Kim",
+    //     "Isabella Chen",
+    //     "Oliver Scott",
+    //     "Liam Walker",
+    //     "Noah Hill",
+    //     "Mila Carter",
+    //     "Henry Nguyen",
+    //     "Charlotte Smith",
+    //     "Lucas White",
+    //     "Ava Johnson",
+    //     "Ethan Brooks",
+    //     "Grace Pham",
+    //     "Daniel Nguyen"
+    // ]

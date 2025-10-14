@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface AlertProps {
     title: string;
     message: string;
-    icon?: ReactNode; // có thể truyền custom icon
+    icon?: ReactNode;
     type?: AlertStatus;
-    duration?: number; // thời gian tự tắt, ms, default 3000
+    duration?: number;
+    onClose?: () => void;
 }
 
 const iconMap: Record<AlertStatus, IconDefinition> = {
@@ -23,27 +24,29 @@ const colorMap: Record<AlertStatus, string> = {
     info: 'bg-blue-100 border-blue-500 text-blue-700',
     warning: 'bg-yellow-100 border-yellow-500 text-yellow-700',
 };
-const Alert: React.FC<AlertProps> = ({ title, message, icon, type = 'info', duration = 3000 }) => {
+const Alert: React.FC<AlertProps> = ({ title, message, icon, type = 'info', duration = 3000, onClose }) => {
     const [show, setShow] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => setShow(false), duration);
+        const timer = setTimeout(() => {
+            setShow(false);
+            if (onClose) onClose();
+        }, duration);
         return () => clearTimeout(timer);
-    }, [duration]);
+    }, [duration, onClose]);
+    if (!show) return null;
     return (
         <>
-            {show && (
-                <div className={`flex items-start gap-3 p-4 border-l-4 rounded-md shadow-md ${colorMap[type]} max-w-md w-full`}>
-                    <div className="mt-1">
-                        {icon ? icon : <FontAwesomeIcon icon={iconMap[type]} size="lg" />}
-                    </div>
-                    <div className="flex-1">
-                        <p className="font-semibold">{title}</p>
-                        <p className="text-sm">{message}</p>
-                    </div>
-                    <button onClick={() => setShow(false)} className="ml-2 font-bold text-lg leading-none">&times;</button>
+            <div className={`flex items-start gap-3 p-4 border-l-4 rounded-md shadow-md ${colorMap[type]} max-w-md w-full`}>
+                <div className="mt-1">
+                    {icon ? icon : <FontAwesomeIcon icon={iconMap[type]} size="lg" />}
                 </div>
-            )}
+                <div className="flex-1">
+                    <p className="font-semibold">{title}</p>
+                    <p className="text-sm">{message}</p>
+                </div>
+                 <button onClick={() => { setShow(false); onClose?.(); }} className="ml-2 font-bold text-lg leading-none">&times;</button>
+            </div>
         </>
     )
 }

@@ -1,4 +1,4 @@
-import CreateNewCart from "@/components/create_cart"
+import CreateNewCart from "@/components/create-cart"
 
 const CreatePage = () => {
     return (
