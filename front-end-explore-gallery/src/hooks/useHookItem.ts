@@ -42,3 +42,13 @@ export function useCategory() {
     };
 }
 
+export function useSearchItems(query: string) {
+    const { data, error, isLoading } = useSWR<ItemType[]>(query ? `http://localhost:3001/items?title_like=${encodeURIComponent(query)}` : null, fetcher);
+    const filterData = Array.isArray(data) ? data.filter((item: ItemType)=> item.title.toLowerCase().includes(query.toLowerCase())) : [];
+    return {
+        data: filterData,
+        isLoading,
+        isError: error,
+    };
+}
+
