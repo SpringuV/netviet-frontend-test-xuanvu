@@ -92,21 +92,22 @@ const HeaderExplorePage = () => {
                 </div>
             )}
             {showSearchBar && (
-                <div className="flex justify-center w-full p-4 border-b-[1px] border-gray-200">
-                    <div className="py-1 w-1/2 flex justify-center items-center gap-2">
+                <div className="fixed top-0 left-0 bg-white z-1000 flex justify-center w-screen p-4 border-b-[1px] border-gray-200">
+                    <div className="py-1 w-full flex justify-center items-center">
                         <div className="relative w-full">
                             <Input
                                 type="text"
                                 placeholder="Search..."
                                 value={searchTerm}
                                 onChange={handleSearchTermChangeInput}
-                                className="w-full !py-2"
+                                className="w-[270px] !py-2"
                             />
                             <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                 <Search />
                             </button>
                         </div>
                         <div><X onClick={handleSearchClick} /></div>
+                        
                     </div>
                 </div>
             )}

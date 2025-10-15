@@ -6,14 +6,16 @@ const ExploreLayout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-            <header id="explore-header">
-                <HeaderExplorePage />
-            </header>
-            <main className="mt-16 md:mt-[68px] lg:mt-[72px]">
-                {children}
-            </main>
-            <div>
-                <Footer />
+            <div className="w-full overflow-hidden">
+                <div className="mb-[64px] md:mb-[68px] lg:mb-[72px]">
+                    <HeaderExplorePage />
+                </div>
+                <main className="">
+                    {children}
+                </main>
+                <div className="mt-5">
+                    <Footer />
+                </div>
             </div>
         </>
     )

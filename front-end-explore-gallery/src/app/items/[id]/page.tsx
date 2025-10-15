@@ -72,7 +72,7 @@ const ItemDetailPage = () => {
                 <img
                     src={itemData.image}
                     alt={itemData.title}
-                    className="w-full rounded-2xl mb-4 h-max-[40vh] lg:h-max-[60vh] object-cover"
+                    className="w-fit rounded-2xl mb-4 h-max-[30vh] lg:h-max-[50vh] object-cover m-auto"
                 />
 
                 <p className="text-gray-500 mb-4"><span className="text-black font-semibold">Category:</span> {itemData.category}</p>
