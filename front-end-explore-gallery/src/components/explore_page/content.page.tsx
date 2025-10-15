@@ -10,7 +10,6 @@ import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { AlertCircle } from "lucide-react";
 import { useSearch } from "../context/search.context";
 import { useFilter } from "../context/filter.context";
-import Footer from "../footer";
 
 const ProductsPage = () => {
     const { data, isLoading, isError } = useItems();

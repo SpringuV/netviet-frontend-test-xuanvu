@@ -69,13 +69,15 @@ const HeaderExplorePage = () => {
                     <div className="flex justify-center items-center">
                         {!is_create_page && (
                             <>
-                                <div className={`mr-2 ${showFilter == true ? " text-blue-700 " : ""}`}>
-                                    <Funnel onClick={handleShowFilter} />
-                                </div>
                                 {!is_detail_page && (
-                                    <div className="text-base md:text-lg lg:text-xl">
-                                        <Search onClick={handleSearchClick} />
-                                    </div>
+                                    <>
+                                        <div className={`mr-2 ${showFilter == true ? " text-blue-700 " : ""}`}>
+                                            <Funnel onClick={handleShowFilter} />
+                                        </div>
+                                        <div className="text-base md:text-lg lg:text-xl">
+                                            <Search onClick={handleSearchClick} />
+                                        </div>
+                                    </>
                                 )}
                                 <Link href={"/create"} className="ml-2 text-white py-1 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-colors duration-300 ease-in-out flex justify-center items-center">
                                     <span className="text-xl font-light w-5 flex justify-center items-cente mr-0 md:mr-2"><PenLine /></span>

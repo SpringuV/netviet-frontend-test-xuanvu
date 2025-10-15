@@ -3,12 +3,15 @@ import HeaderExplorePage from "@/components/explore_page/header.page";
 import Footer from "@/components/footer";
 
 const ExploreLayout = ({ children }: { children: React.ReactNode }) => {
+
     return (
         <>
-            <div className="mb-[17%] md:mb-[20%]">
+            <header id="explore-header">
                 <HeaderExplorePage />
-            </div>
-            {children}
+            </header>
+            <main className="mt-16 md:mt-[68px] lg:mt-[72px]">
+                {children}
+            </main>
             <div>
                 <Footer />
             </div>

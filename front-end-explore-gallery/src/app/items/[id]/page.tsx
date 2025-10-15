@@ -72,11 +72,11 @@ const ItemDetailPage = () => {
                 <img
                     src={itemData.image}
                     alt={itemData.title}
-                    className="w-full rounded-2xl mb-4 h-[70vh] object-cover"
+                    className="w-full rounded-2xl mb-4 h-max-[40vh] lg:h-max-[60vh] object-cover"
                 />
 
                 <p className="text-gray-500 mb-4"><span className="text-black font-semibold">Category:</span> {itemData.category}</p>
-                <p className="text-lg mb-4">{itemData.description}</p>
+                <p className="text-gray-500 mb-4"><span className="text-black font-semibold">Decription: </span>{itemData.description}</p>
 
                 {itemData?.tags && (
                     <div className="flex gap-2 mb-4">
@@ -95,7 +95,7 @@ const ItemDetailPage = () => {
                 <div className="flex justify-between items-center text-gray-600">
                     <span><span className="text-black font-semibold">Author:</span> {itemData.author}</span>
                     <div>
-                        
+
                         <button
                             onClick={handleLike}
                             disabled={liking}
