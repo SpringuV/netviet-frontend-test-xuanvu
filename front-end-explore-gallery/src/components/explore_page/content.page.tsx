@@ -1,6 +1,5 @@
 'use client'
 import FilterCategoryAndSort from "./filter_sort";
-import { useCategory } from "@/hooks/useHookItem";
 import { useFilter } from "../context/filter.context";
 import ItemList from "./item-list";
 import { useState } from "react";
@@ -10,13 +9,11 @@ const ProductsPage = () => {
     const { showFilter } = useFilter()
     const [sort, setSort] = useState<string | null>(null)
     const [category, setCategory] = useState<string | null>(null)
-    const { data: categories } = useCategory()
 
     return (
         <>
             {showFilter && (
                 <FilterCategoryAndSort
-                    categories={categories || []}
                     onCategoryChange={v => setCategory(v === 'all' ? null : v)}
                     onSortChange={v => setSort(v)}
                 />

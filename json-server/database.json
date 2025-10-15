@@ -276,39 +276,5 @@
       "like": 0,
       "likes": 8
     }
-  ],
-  "categories": [
-    {
-      "id": "1",
-      "name": "Nature"
-    },
-    {
-      "id": "2",
-      "name": "Architecture"
-    },
-    {
-      "id": "3",
-      "name": "Travel"
-    },
-    {
-      "id": "4",
-      "name": "Objects"
-    },
-    {
-      "id": "5",
-      "name": "People"
-    },
-    {
-      "id": "6",
-      "name": "Vehicles"
-    },
-    {
-      "id": "7",
-      "name": "Art"
-    },
-    {
-      "id": "8",
-      "name": "Animals"
-    }
   ]
 }

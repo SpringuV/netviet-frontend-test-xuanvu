@@ -4,14 +4,22 @@ import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { useState } from "react";
 import { Textarea } from "./ui/textarea";
-import { useCategory } from "@/hooks/useHookItem";
 import Alert from "./alert/alert";
 import { AlertStatus } from "@/types/type";
 
+const categories = [
+    { id: "1", name: "Nature" },
+    { id: "2", name: "Architecture" },
+    { id: "3", name: "Travel" },
+    { id: "4", name: "Objects" },
+    { id: "5", name: "People" },
+    { id: "6", name: "Vehicles" },
+    { id: "7", name: "Art" },
+    { id: "8", name: "Animals" },
+];
 const CreateNewCart = () => {
     const [preview, setPreview] = useState<string | null>(null);
     const [alert, setAlert] = useState<{ title: string; message: string; type: AlertStatus; duration: number } | null>(null);
-    const { data: categories, isLoading, isError } = useCategory();
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [newItemGallery, setNewItemGallery] = useState({
         title: '',
@@ -95,27 +103,21 @@ const CreateNewCart = () => {
                     </div>
                     <div className="flex items-center gap-4">
                         <label htmlFor="category" className="font-medium">Category: </label>
-                        {isLoading ? (
-                            <div>Loading categories...</div>
-                        ) : isError ? (
-                            <div>Error loading categories</div>
-                        ) : (
-                            <Select key={selectedCategory ?? 'empty'} value={selectedCategory || undefined} onValueChange={(value) => {
-                                setNewItemGallery(prev => ({ ...prev, category: value }));
-                                setSelectedCategory(value);
-                            }}>
-                                <SelectTrigger className="w-[200px]">
-                                    <SelectValue placeholder="Select category" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {categories?.map((cate: { id: number; name: string }) => (
-                                        <SelectItem key={cate.id} value={cate.name}>
-                                            {cate.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        )}
+                        <Select key={selectedCategory ?? 'empty'} value={selectedCategory || undefined} onValueChange={(value) => {
+                            setNewItemGallery(prev => ({ ...prev, category: value }));
+                            setSelectedCategory(value);
+                        }}>
+                            <SelectTrigger className="w-[200px]">
+                                <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent className="z-[1004]">
+                                {categories.map((cat) => (
+                                    <SelectItem key={cat.id} value={cat.name}>
+                                        {cat.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="image" className="mb-2 font-medium">Image URL: </label>

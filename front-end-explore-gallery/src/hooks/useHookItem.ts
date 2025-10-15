@@ -1,64 +1,62 @@
 'use client'
+import { PAGE_SIZE } from '@/constant'
 import { ItemType } from '@/types/type'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-const PAGE_SIZE = 12
+
 const API_URL = 'http://localhost:3001'
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 
 export const useInfiniteItems = (category?: string | null, sort?: string | null) => {
     const getKey = (pageIndex: number, previousPageData: ItemType[]) => {
-        if (previousPageData && previousPageData.length === 0) {
-            return null;
-        }
-        // query
+        if (previousPageData && previousPageData.length === 0) return null;
+
         const params = new URLSearchParams({
             _page: String(pageIndex + 1),
             _limit: String(PAGE_SIZE)
-        })
-        if (category && category !== 'all') {
-            params.append('category', category)
-        }
-        if (sort === "a-z") {
-            params.append('_sort', 'title')
-        } else if (sort === 'z-a') {
-            params.append('_sort', 'title')
-            params.append('_order', 'desc')
-        } else if (sort === 'latest') {
-            params.append('_sort', 'created_at')
-            params.append('_order', 'desc')
-        } else if (sort === 'oldest') {
-            params.append('_sort', 'created_at')
-            params.append('_order', 'asc')
-        } else if (sort === 'trending') {
-            params.append('_sort', 'likes')
-            params.append('_order', 'desc')
+        });
+
+        if (category && category !== "all") params.append("category", category);
+
+        switch (sort) {
+            case "a-z":
+                params.append("_sort", "title");
+                break;
+            case "z-a":
+                params.append("_sort", "title");
+                params.append("_order", "desc");
+                break;
+            case "latest":
+                params.append("_sort", "created_at");
+                params.append("_order", "desc");
+                break;
+            case "oldest":
+                params.append("_sort", "created_at");
+                params.append("_order", "asc");
+                break;
+            case "trending":
+                params.append("_sort", "likes");
+                params.append("_order", "desc");
+                break;
         }
 
-        console.log('url: ', `${API_URL}/items?${params.toString()}`)
-        return `${API_URL}/items?${params.toString()}`
-    }
+        return `${API_URL}/items?${params.toString()}`;
+    };
 
-    const { data, error, size, setSize, isLoading, mutate } = useSWRInfinite(getKey, fetcher, {
+    const { data, error, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher, {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
-        dedupingInterval: 5000, //duplicate requests
-    })
+        dedupingInterval: 5000
+    });
 
-    const items = data ? [].concat(...data) : []
+    const items = data ? [].concat(...data) : [];
+    const lastPage = data ? data[data.length - 1] : [];
+    const hasMore = lastPage.length === PAGE_SIZE;
 
-    return {
-        items,
-        isLoading,
-        isError: error,
-        size,
-        setSize,
-        hasMore: data ? data[data.length - 1]?.length === PAGE_SIZE : true,
-        mutate
-    }
-}
+    return { items, isLoading, isError: error, size, setSize, hasMore };
+};
 
 export const useItem = (id?: string) => {
     const { data, error, isLoading, mutate } = useSWR<ItemType>(id ? `${API_URL}/items/${id}` : null, fetcher,
@@ -109,14 +107,6 @@ export const useRelatedItem = (cate?: string, id?: string) => {
         isError: error,
         mutate
     }
-}
-
-export const useCategory = () => {
-    const { data, error, isLoading } = useSWR(`${API_URL}/categories`, fetcher, {
-        revalidateOnFocus: false,
-        shouldRetryOnError: false,
-    })
-    return { data, isLoading, isError: error }
 }
 
 export const useSearchItems = (query: string) => {
