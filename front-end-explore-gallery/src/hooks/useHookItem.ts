@@ -44,7 +44,7 @@ export function useCategory() {
 }
 
 export function useSearchItems(query: string) {
-    console.log(">> check query: " , query)
+    // console.log(">> check query: " , query)
     const { data, error, isLoading } = useSWR<ItemType[]>(query.trim().length !== 0 ? `http://localhost:3001/items?title_like=${encodeURIComponent(query)}` : 'http://localhost:3001/items', fetcher, {
         revalidateOnFocus: false, // tránh refetch khi đổi tab
         shouldRetryOnError: false,

@@ -4,21 +4,27 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../toggle-mode";
 import { Input } from "../ui/input";
-import { Search, X } from "lucide-react";
+import { Funnel, PenLine, Search, X } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useSearch } from "../context/search.context";
 import { useDebounce, useSearchItems } from "@/hooks/useHookItem";
+import { useFilter } from "../context/filter.context";
 // <a href="..."> <button> <input>, <textarea>, <select></select> use tab-keyboard
 
 
 const HeaderExplorePage = () => {
     const pathName = usePathname();
     const { searchTerm, setSearchTerm, setListItem } = useSearch();
+    const { setShowFilter, showFilter } = useFilter();
     const is_create_page = pathName === "/create";
     const is_detail_page = pathName.startsWith("/items/");
     const [showSearchBar, setShowSearchBar] = useState(false);
     const handleSearchTermChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
+    }
+
+    const handleShowFilter = () => {
+        setShowFilter(!showFilter)
     }
 
     const handleSearchClick = () => {
@@ -54,21 +60,28 @@ const HeaderExplorePage = () => {
     return (
         <>
             {!showSearchBar && (
-                <div className="flex justify-between w-full p-4 border-b-[1px] border-gray-200">
-                    <Link className="tab-keyboard hover:scale-[105%] transition-all duration-300 ease-in-out hover:underline tab-keyboard rounded-lg px-3 py-1" href="/">
-                        <div className="text-center text-2xl font-semibold">
+                <div className="fixed top-0 left-0 bg-white z-1000 flex justify-between w-screen p-4 border-b-[1px] border-gray-200">
+                    <Link className="flex items-center justify-center tab-keyboard hover:scale-[105%] transition-all duration-300 ease-in-out hover:underline tab-keyboard rounded-lg px-0 md:px-3 md:py-1" href="/">
+                        <div className="text-center lg:text-2xl text-base text-wrap font-semibold">
                             <div>EXPLORE GALERY</div>
                         </div>
                     </Link>
                     <div className="flex justify-center items-center">
-                        {!is_detail_page && (
-                            <Search onClick={handleSearchClick} />
-                        )}
                         {!is_create_page && (
-                            <Link href={"/create"} className="ml-2 text-white py-1 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-colors duration-300 ease-in-out flex justify-center items-center">
-                                <span className="text-xl font-light w-5 flex justify-center items-center">+</span>
-                                <span>Create New</span>
-                            </Link>
+                            <>
+                                <div className={`mr-2 ${showFilter == true ? " text-blue-700 " : ""}`}>
+                                    <Funnel onClick={handleShowFilter} />
+                                </div>
+                                {!is_detail_page && (
+                                    <div className="text-base md:text-lg lg:text-xl">
+                                        <Search onClick={handleSearchClick} />
+                                    </div>
+                                )}
+                                <Link href={"/create"} className="ml-2 text-white py-1 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-colors duration-300 ease-in-out flex justify-center items-center">
+                                    <span className="text-xl font-light w-5 flex justify-center items-cente mr-0 md:mr-2"><PenLine /></span>
+                                    <span className="hidden md:block">Create New</span>
+                                </Link>
+                            </>
                         )}
                         <div className="ml-2">
                             <ModeToggle />

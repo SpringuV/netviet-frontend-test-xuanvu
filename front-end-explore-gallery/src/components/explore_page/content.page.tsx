@@ -9,26 +9,15 @@ import { Skeleton } from "../ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { AlertCircle } from "lucide-react";
 import { useSearch } from "../context/search.context";
-const SkeletonCard = () => (
-    <div className="border rounded-lg p-4 shadow-sm space-y-3">
-        <Skeleton className="h-48 w-full rounded-md" />
-        <div className="flex items-center justify-between">
-            <div className="flex-1 space-y-2">
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-            </div>
-
-            <Skeleton className="h-8 w-1/4" />
-        </div>
-    </div>
-);
+import { useFilter } from "../context/filter.context";
+import Footer from "../footer";
 
 const ProductsPage = () => {
     const { data, isLoading, isError } = useItems();
     const { listItem } = useSearch();
     const [sort, setSelectedSort] = useState<string | null>(null);
     const [category, setSelectedCategory] = useState<string | null>(null);
-
+    const { showFilter } = useFilter()
     const isSearchActive = listItem && listItem.length > 0;
 
     // Reset filter khi có search active
@@ -39,21 +28,34 @@ const ProductsPage = () => {
         }
     }, [isSearchActive]);
 
+    const SkeletonCard = () => (
+        <div className="border rounded-lg p-4 shadow-sm space-y-3">
+            <Skeleton className="h-48 w-full rounded-md" />
+            <div className="flex items-center justify-between">
+                <div className="flex-1 space-y-2">
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                </div>
+
+                <Skeleton className="h-8 w-1/4" />
+            </div>
+        </div>
+    );
 
     // lọc theo category 
     const filteredAndSortedItems = useMemo(() => {
         // Chọn nguồn data: search results hoặc all items
         const sourceData = isSearchActive ? listItem : (data || []);
-        
+
         if (sourceData.length === 0) return [];
-        
+
         let items = [...sourceData];
-        
+
         // Apply category filter
         if (category && category !== 'all') {
             items = items.filter((item: ItemType) => item.category === category);
         }
-        
+
         // Apply sorting
         if (sort) {
             items.sort((a: ItemType, b: ItemType) => {
@@ -73,7 +75,7 @@ const ProductsPage = () => {
                 }
             });
         }
-        
+
         return items;
     }, [sort, category, data, listItem, isSearchActive]);
 
@@ -97,11 +99,17 @@ const ProductsPage = () => {
 
     const displayItems = listItem && listItem.length > 0 ? listItem : filteredAndSortedItems;
 
-
     return (
         <>
-            <FilterCategoryAndSort categories={categories} onCategoryChange={(value) => handleCategoryChange(value)} onSortChange={(value) => handleSortChange(value)} totalItems={filteredAndSortedItems.length} />
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mx-[5%] md:mx-[10%]">
+            {showFilter && (
+                <div className="w-screen">
+                    <FilterCategoryAndSort
+                        categories={categories} onCategoryChange={(value) => handleCategoryChange(value)}
+                        onSortChange={(value) => handleSortChange(value)}
+                        totalItems={filteredAndSortedItems.length} />
+                </div>
+            )}
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mx-[5%] md:mx-[10%] ">
                 {/* Skeleton loading */}
                 {isLoading &&
                     Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
