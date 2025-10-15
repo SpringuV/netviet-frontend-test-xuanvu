@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import CartItem from "@/components/explore_page/cardItem";
-import { useItem, useItems } from "@/hooks/useHookItem";
+import { useItem, useRelatedItem } from "@/hooks/useHookItem";
 import { ItemType } from "@/types/type";
 import { notFound, useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -16,12 +16,9 @@ const ItemDetailPage = () => {
     const { data: itemData, isError: isItemError, isLoading: isItemLoading, mutate: mutateItem, } = useItem(id);
 
     // Fetch danh sách item để hiển thị related
-    const {
-        data: allItems,
-        isError: isAllError,
-        isLoading: isAllLoading,
-    } = useItems();
-
+    const { data: itemsRelated, isError: isItemsRelatedError, isLoading: isItemsRelatedLoading, mutate: mutateItemsRelated } = useRelatedItem(itemData?.category, id)
+    console.log("item category: ", itemData?.category, "id: ", id)
+    console.log("data relate: ", itemsRelated)
     if (isItemError) return notFound();
 
     // show loading khi k có data
@@ -33,8 +30,6 @@ const ItemDetailPage = () => {
     if (!itemData) {
         return <div className="text-center py-10">No data found</div>;
     }
-
-    const relatedItems = allItems?.filter((relate: ItemType) => (relate.category === itemData.category) && relate.id !== id) || [];
     const handleLike = async () => {
         if (liking) return; // tránh double click
         setLiking(true);
@@ -109,11 +104,11 @@ const ItemDetailPage = () => {
             </div>
 
             {/* More from this category */}
-            {relatedItems.length > 0 && (
+            {itemsRelated.length > 0 && (
                 <div className="p-6 max-w-5xl mx-auto">
                     <h2 className="text-2xl font-semibold mb-4">More from this category</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {relatedItems.map((itemRelate: ItemType) => (
+                        {itemsRelated.map((itemRelate: ItemType) => (
                             <div
                                 onClick={() => handleOnClick(itemRelate.id)}
                                 key={itemRelate.id}
