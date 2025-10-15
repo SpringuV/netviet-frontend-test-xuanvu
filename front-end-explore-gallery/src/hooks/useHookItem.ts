@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
-const API_URL = 'http://localhost:3001'
+const API_URL = process.env.NEXT_PUBLIC_URL_BACKEND
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 
