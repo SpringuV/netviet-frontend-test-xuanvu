@@ -37,15 +37,17 @@ const Alert: React.FC<AlertProps> = ({ title, message, icon, type = 'info', dura
     if (!show) return null;
     return (
         <>
-            <div className={`flex items-start gap-3 p-4 border-l-4 rounded-md shadow-md ${colorMap[type]} max-w-md w-full`}>
-                <div className="mt-1">
-                    {icon ? icon : <FontAwesomeIcon icon={iconMap[type]} size="lg" />}
+            <div className="fixed z-1001 right-5 top-20">
+                <div className={`flex items-start gap-3 p-4 border-l-4 rounded-md shadow-md ${colorMap[type]} max-w-md w-full`}>
+                    <div className="mt-1">
+                        {icon ? icon : <FontAwesomeIcon icon={iconMap[type]} size="lg" />}
+                    </div>
+                    <div className="flex-1">
+                        <p className="font-semibold">{title}</p>
+                        <p className="text-sm">{message}</p>
+                    </div>
+                    <button onClick={() => { setShow(false); onClose?.(); }} className="ml-2 font-bold text-lg leading-none">&times;</button>
                 </div>
-                <div className="flex-1">
-                    <p className="font-semibold">{title}</p>
-                    <p className="text-sm">{message}</p>
-                </div>
-                 <button onClick={() => { setShow(false); onClose?.(); }} className="ml-2 font-bold text-lg leading-none">&times;</button>
             </div>
         </>
     )

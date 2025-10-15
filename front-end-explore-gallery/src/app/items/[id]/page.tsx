@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import CartItem from "@/components/explore_page/cardItem";
+import CartItem from "@/components/explore_page/cart-item";
 import ZoomImage from "@/components/zoom-image";
 import { useItem, useRelatedItem } from "@/hooks/useHookItem";
 import { ItemType } from "@/types/type";
@@ -13,9 +13,8 @@ const ItemDetailPage = () => {
     const router = useRouter();
     const paramString = useParams();
     const id = String(paramString.id);
-
     // Fetch item
-    const { data: itemData, isError: isItemError, isLoading: isItemLoading, mutate: mutateItem, } = useItem(id);
+    const { data: itemData, isError: isItemError, isLoading: isItemLoading, mutate: mutateItem, updateLike} = useItem(id);
 
     // Fetch 
     const { data: itemsRelated, isError: isItemsRelatedError, isLoading: isItemsRelatedLoading, mutate: mutateItemsRelated } = useRelatedItem(itemData?.category, id)
@@ -30,31 +29,6 @@ const ItemDetailPage = () => {
     if (!itemData) {
         return <div className="text-center py-10">No data found</div>;
     }
-    const handleLike = async () => {
-        if (liking) return; // tránh double click
-        setLiking(true);
-
-        // Optimistic update
-        mutateItem({ ...itemData, likes: itemData.likes + 1 }, false);
-
-        try {
-            // Gọi PATCH lên server
-            await fetch(`http://localhost:3001/items/${id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ likes: itemData.likes + 1 }),
-            });
-
-            // Revalidate
-            mutateItem();
-        } catch (e) {
-            console.error(e);
-            // rollback
-            mutateItem();
-        } finally {
-            setLiking(false);
-        }
-    };
 
     const handleOnClick = (id: string) => {
         router.push(`/items/${id}`);
@@ -95,7 +69,7 @@ const ItemDetailPage = () => {
                     <div>
 
                         <button
-                            onClick={handleLike}
+                            onClick={(e) => { e.stopPropagation(); updateLike(); }}
                             disabled={liking}
                             className={`text-base ${liking ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'} transition-all duration-300 mr-3 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white px-4 py-1 rounded-lg`}
                         >

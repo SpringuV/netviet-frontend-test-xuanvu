@@ -61,13 +61,39 @@ export const useInfiniteItems = (category?: string | null, sort?: string | null)
 }
 
 export const useItem = (id?: string) => {
-    const { data, error, isLoading, mutate } = useSWR<ItemType>(id ? `${API_URL}/items/${id}` : null, fetcher)
+    const { data, error, isLoading, mutate } = useSWR<ItemType>(id ? `${API_URL}/items/${id}` : null, fetcher,
+        {
+            revalidateOnFocus: false,
+            shouldRetryOnError: false,
+        }
+    );
+
+    const updateLike = async () => {
+        if (!data) return;
+        mutate({ ...data, likes: data.likes + 1 }, false);
+
+        try {
+            await fetch(`${API_URL}/items/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ likes: data.likes + 1 }),
+            });
+            // Revalidate 
+            mutate();
+        } catch (err) {
+            console.error(err);
+            // Rollback
+            mutate();
+        }
+    };
+
     return {
         data,
         isLoading,
         isError: error,
         mutate,
-    }
+        updateLike,
+    };
 }
 
 export const useRelatedItem = (cate?: string, id?: string) => {

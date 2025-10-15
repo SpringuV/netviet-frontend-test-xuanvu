@@ -2,10 +2,9 @@
 
 import { useInfiniteItems } from "@/hooks/useHookItem"
 import { ItemType } from "@/types/type"
-import Link from "next/link"
 import { useEffect, useRef } from "react"
-import CartItem from "./cardItem"
 import { Skeleton } from "../ui/skeleton"
+import ItemCardWithLike from "./item-cart-with-like"
 
 const ItemList = ({ category, sort }: { category?: string | null; sort?: string | null }) => {
     const SkeletonCard = () => (
@@ -21,9 +20,8 @@ const ItemList = ({ category, sort }: { category?: string | null; sort?: string 
             </div>
         </div>
     );
-    const { items, setSize, hasMore, size, isLoading, isError, mutate } = useInfiniteItems(category, sort)
+    const { items, setSize, hasMore, size, isLoading, isError } = useInfiniteItems(category, sort)
     const loaderRef = useRef<HTMLDivElement>(null)
-
     useEffect(() => {
         const target = loaderRef.current
         if (!target || !hasMore || isLoading) return
@@ -66,12 +64,10 @@ const ItemList = ({ category, sort }: { category?: string | null; sort?: string 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {isLoading && Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
             {items.map((item: ItemType) => (
-                <Link key={item.id} href={`/items/${item.id}`} className="cursor-pointer">
-                    <CartItem item={item} />
-                </Link>
+                <ItemCardWithLike key={item.id} item={item} />
             ))}
 
-            {hasMore && (
+            { hasMore && (
                 <div ref={loaderRef} className="col-span-full h-20 flex items-center justify-center">
                     {isLoading && (
                         <span className="text-gray-400">Loading more items...</span>

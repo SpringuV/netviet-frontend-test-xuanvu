@@ -62,7 +62,7 @@ const HeaderExplorePage = () => {
             {!showSearchBar && (
                 <div className="fixed top-0 left-0 bg-white z-1000 flex justify-between w-screen p-4 border-b-[1px] border-gray-200">
                     <Link className="flex items-center justify-center tab-keyboard hover:scale-[105%] transition-all duration-300 ease-in-out hover:underline tab-keyboard rounded-lg px-0 md:px-3 md:py-1" href="/">
-                        <div className="text-center lg:text-2xl text-base text-wrap font-semibold">
+                        <div className="text-center lg:text-4xl text-lg text-wrap font-semibold">
                             <div>EXPLORE GALERY</div>
                         </div>
                     </Link>
