@@ -11,9 +11,9 @@ type PropsType = {
 const FilterCategoryAndSort = (props: PropsType) => {
     const { categories = [], onCategoryChange, onSortChange, totalItems = 0 } = props;
     return (
-        <div className="flex w-full justify-center items-center flex-col lg:flex-row gap-2 border-y-[1px] p-2 md:p-3">
+        <div className="fixed bg-white z-100 flex w-full justify-center items-center flex-col lg:flex-row gap-2 border-y-[1px] p-2 md:p-3">
             <div className="flex items-center justify-center  gap-2 md:gap-3">
-                <label className="w-[20vw] text-left md:w-[12vw] lg:w-[6vw] font-light text-base md:text-lg lg:text-xl">FILTER BY</label>
+                <label className="w-[20vw] text-left md:w-[12vw] lg:w-[7vw] lg:text-right font-light text-base md:text-lg">FILTER BY</label>
                 <Select onValueChange={onCategoryChange}>
                     <SelectTrigger className="w-[220px]">
                         <SelectValue placeholder="Category" />
@@ -27,7 +27,7 @@ const FilterCategoryAndSort = (props: PropsType) => {
                 </Select>
             </div>
             <div className="flex items-center justify-center gap-2 md:gap-3">
-                <label className="w-[20vw] md:w-[12vw] lg:w-[6vw] text-left font-light text-base md:text-lg lg:text-xl">SORT BY</label>
+                <label className="w-[20vw] md:w-[12vw] lg:w-[7vw] text-left lg:text-right font-light text-base md:text-lg">SORT BY</label>
                 <Select onValueChange={onSortChange}>
                     <SelectTrigger className="w-[220px]">
                         <SelectValue placeholder="Select Sort" />

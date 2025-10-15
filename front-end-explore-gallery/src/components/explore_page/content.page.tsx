@@ -101,7 +101,7 @@ const ProductsPage = () => {
     return (
         <>
             {showFilter && (
-                <div className="w-screen">
+                <div className="w-full">
                     <FilterCategoryAndSort
                         categories={categories} onCategoryChange={(value) => handleCategoryChange(value)}
                         onSortChange={(value) => handleSortChange(value)}

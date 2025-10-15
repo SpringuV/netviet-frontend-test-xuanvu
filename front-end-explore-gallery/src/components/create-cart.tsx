@@ -87,7 +87,7 @@ const CreateNewCart = () => {
                 </div>
             )}
             <div className="flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-semibold mb-6">Create New Item Gallery</h1>
+                <h1 className="text-2xl font-semibold my-6">Create New Item Gallery</h1>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full max-w-md bg-white py-3 px-6 rounded-xl shadow-md">
                     <div className="flex flex-col">
                         <label htmlFor="title" className="mb-2 font-medium">Title: </label>
