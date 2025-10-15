@@ -17,7 +17,7 @@ const CartItem = (props: PropsType) => {
                         <h3 className="font-semibold">{item.title}</h3>
                         <p className="text-sm text-gray-500">{item.category}</p>
                     </div>
-                    <div className="flex items-center">❤️ {item.likes} like</div>
+                    <div className="flex items-center">❤️ {item.likes}</div>
                 </div>
             </div>
         </>

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import CartItem from "@/components/explore_page/cardItem";
+import ZoomImage from "@/components/zoom-image";
 import { useItem, useRelatedItem } from "@/hooks/useHookItem";
 import { ItemType } from "@/types/type";
 import { notFound, useParams, useRouter } from "next/navigation";
@@ -8,25 +9,24 @@ import React, { useState } from "react";
 
 const ItemDetailPage = () => {
     const [liking, setLiking] = useState(false);
+    const [zoom, setZoom] = useState(false);
     const router = useRouter();
     const paramString = useParams();
     const id = String(paramString.id);
 
-    // Fetch dữ liệu item cụ thể
+    // Fetch item
     const { data: itemData, isError: isItemError, isLoading: isItemLoading, mutate: mutateItem, } = useItem(id);
 
-    // Fetch danh sách item để hiển thị related
+    // Fetch 
     const { data: itemsRelated, isError: isItemsRelatedError, isLoading: isItemsRelatedLoading, mutate: mutateItemsRelated } = useRelatedItem(itemData?.category, id)
-    console.log("item category: ", itemData?.category, "id: ", id)
-    console.log("data relate: ", itemsRelated)
     if (isItemError) return notFound();
 
-    // show loading khi k có data
+    // loading
     if (isItemLoading && !itemData) {
         return <div className="text-center py-10">Loading...</div>;
     }
 
-    // Handle no data case
+    // data not found
     if (!itemData) {
         return <div className="text-center py-10">No data found</div>;
     }
@@ -49,7 +49,7 @@ const ItemDetailPage = () => {
             mutateItem();
         } catch (e) {
             console.error(e);
-            // rollback nếu có lỗi: lấy lại dữ liệu từ server
+            // rollback
             mutateItem();
         } finally {
             setLiking(false);
@@ -60,15 +60,18 @@ const ItemDetailPage = () => {
         router.push(`/items/${id}`);
     };
 
+    const handleZoom = () => {
+        setZoom(!zoom)
+    }
+
     return (
         <>
             <div className="p-6 max-w-5xl mx-auto">
                 <h1 className="text-3xl font-semibold mb-2">{itemData.title}</h1>
-                <img
-                    src={itemData.image}
-                    alt={itemData.title}
-                    className="w-fit rounded-2xl mb-4 h-max-[30vh] lg:h-max-[50vh] object-cover m-auto"
-                />
+                <div className="">
+                    <img onClick={handleZoom} src={itemData.image} alt={itemData.title} className=" rounded-2xl mb-4 object-cover m-auto min-h-[30vh] max-h-[50vh]" />
+                    <ZoomImage alt={itemData.title} source={itemData.image} setZoom={handleZoom} zoom={zoom} />
+                </div>
 
                 <p className="text-gray-500 mb-4"><span className="text-black font-semibold">Category:</span> {itemData.category}</p>
                 <p className="text-gray-500 mb-4"><span className="text-black font-semibold">Decription: </span>{itemData.description}</p>

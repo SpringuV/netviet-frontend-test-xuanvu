@@ -31,8 +31,7 @@ const ItemList = ({ category, sort }: { category?: string | null; sort?: string 
             entries => {
                 const entry = entries[0]
                 if (entry.isIntersecting && hasMore) {
-                    console.log("Observer triggered!");
-                    setSize(size + 1) // gọi page kế tiếp
+                    setSize(size + 1) // next page
                 }
             },
             { rootMargin: "300px", threshold: 0.5 }
