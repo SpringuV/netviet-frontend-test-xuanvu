@@ -5,6 +5,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import ExploreLayout from "@/layout/explore.layout";
 import { ThemeProvider } from "@/components/themes-provider";
+import { SearchProvider } from "@/components/context/search.context";
 
 config.autoAddCss = false;
 
@@ -39,9 +40,11 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <ExploreLayout>
-                        {children}
-                    </ExploreLayout>
+                    <SearchProvider>
+                        <ExploreLayout>
+                            {children}
+                        </ExploreLayout>
+                    </SearchProvider>
                 </ThemeProvider>
             </body>
         </html>
