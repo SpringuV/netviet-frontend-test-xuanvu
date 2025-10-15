@@ -3,7 +3,7 @@
 import { PAGE_SIZE } from '@/constant'
 import { ItemType } from '@/types/type'
 import { useEffect, useState } from 'react'
-import useSWR, { mutate } from 'swr'
+import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { mutate as globalMutate } from "swr";
 

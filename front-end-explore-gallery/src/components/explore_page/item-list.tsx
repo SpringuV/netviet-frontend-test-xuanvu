@@ -48,7 +48,7 @@ const ItemList = ({ category, sort }: Props) => {
         </div>
     );
 
-    if (isError) return <div className="text-center text-red-500">Failed to load items.</div>;
+    if (isError) return <div className="text-center dark:text-red-400 text-red-500">Failed to load items.</div>;
 
     if (!items.length && isLoading)
         return (
@@ -59,7 +59,7 @@ const ItemList = ({ category, sort }: Props) => {
             </div>
         );
 
-    if (!items.length) return <div className="text-center text-gray-500 py-10">No items found.</div>;
+    if (!items.length) return <div className="text-center text-gray-500 dark:text-white py-10">No items found.</div>;
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

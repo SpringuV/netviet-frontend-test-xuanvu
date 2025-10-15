@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Textarea } from "./ui/textarea";
 import Alert from "./alert/alert";
 import { AlertStatus, ItemType } from "@/types/type";
-import { mutate as globalMutate } from "swr";
 import { createItem } from "@/hooks/useHookItem";
 
 const categories = [
@@ -128,10 +127,10 @@ const CreateNewCart = () => {
             )}
             <div className="flex flex-col items-center justify-center">
                 <h1 className="text-2xl font-semibold my-6">Create New Item Gallery</h1>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full max-w-md bg-white py-3 px-6 rounded-xl shadow-md">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full max-w-md bg-white dark:bg-gray-600 py-3 px-6 rounded-xl shadow-md">
                     <div className="flex flex-col">
                         <label htmlFor="title" className="mb-2 font-medium">Title: </label>
-                        <Input value={newItemGallery.title} onChange={handleInputChange} name="title" type="text" placeholder="Enter title ..." />
+                        <Input className="dark:bg-gray-200 dark:text-black hover:bg-gray-100 dark:hover:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:!ring-blue-300 focus:ring-offset-1" value={newItemGallery.title} onChange={handleInputChange} name="title" type="text" placeholder="Enter title ..." />
                     </div>
                     <div className="flex items-center gap-4">
                         <label htmlFor="category" className="font-medium">Category: </label>
@@ -153,24 +152,28 @@ const CreateNewCart = () => {
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="image" className="mb-2 font-medium">Image URL: </label>
-                        <Input value={newItemGallery.image} onChange={handleInputChange} name="image" type="text" placeholder="Enter image URL ..." />
+                        <Input className="dark:bg-gray-200 dark:text-black hover:bg-gray-100 dark:hover:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:!ring-blue-300 focus:ring-offset-1"
+                            value={newItemGallery.image} onChange={handleInputChange} name="image" type="text" placeholder="Enter image URL ..." />
                         {preview && (
                             <div className="m-auto">
-                                <img src={preview} alt="Preview image" className="w-52 h-52 object-cover rounded-lg mt-2" />
+                                <img src={preview} alt="Preview image" className="min-h-0 max-h-[220px] object-cover rounded-lg mt-2" />
                             </div>
                         )}
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="author" className="mb-2 font-medium">Author: </label>
-                        <Input value={newItemGallery.author} onChange={handleInputChange} name="author" type="text" placeholder="Enter author ..." />
+                        <Input className="dark:bg-gray-200 dark:text-black hover:bg-gray-100 dark:hover:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:!ring-blue-300 focus:ring-offset-1"
+                            value={newItemGallery.author} onChange={handleInputChange} name="author" type="text" placeholder="Enter author ..." />
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="tags" className="mb-2 font-medium">Tags: </label>
-                        <Input value={newItemGallery.tags} onChange={handleInputChange} name="tags" type="text" placeholder="Enter tags ..." />
+                        <Input className="dark:bg-gray-200 dark:text-black hover:bg-gray-100 dark:hover:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:!ring-blue-300 focus:ring-offset-1"
+                            value={newItemGallery.tags} onChange={handleInputChange} name="tags" type="text" placeholder="Enter tags ..." />
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="description" className="mb-2 font-medium">Description: </label>
-                        <Textarea value={newItemGallery.description} onChange={handleInputChange} name="description" placeholder="Enter description ..." />
+                        <Textarea className="dark:bg-gray-200 dark:text-black hover:bg-gray-100 dark:hover:bg-gray-300 focus:outline-none focus:ring-2 dark:focus:!ring-blue-300 focus:ring-offset-1"
+                            value={newItemGallery.description} onChange={handleInputChange} name="description" placeholder="Enter description ..." />
                     </div>
                     <div className="flex justify-end">
                         <button type="submit" className=" text-white py-2 px-5 rounded-lg duration-300 transition-colors bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500">Create</button>

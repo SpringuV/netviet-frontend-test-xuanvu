@@ -18,7 +18,7 @@ const categories = [
 const FilterCategoryAndSort = (props: PropsType) => {
     const { onCategoryChange, onSortChange} = props;
     return (
-        <div className="fixed left-0 top-[60px] md:top-[68px] lg:top-[80px] bg-white z-100 flex w-full justify-center items-center flex-col lg:flex-row gap-2 border-y-[1px] py-2 md:py-3">
+        <div className="fixed left-0 top-[60px] md:top-[68px] lg:top-[80px] bg-white dark:bg-gray-500 z-100 flex w-full justify-center items-center flex-col border-white lg:flex-row gap-2 border-y-[1px] py-2 md:py-3">
             <div className="flex items-center justify-center  gap-2 md:gap-3">
                 <label className="w-[20vw] text-left md:w-[12vw] lg:w-[7vw] lg:text-right font-light text-base md:text-lg">FILTER BY</label>
                 <Select onValueChange={onCategoryChange}>

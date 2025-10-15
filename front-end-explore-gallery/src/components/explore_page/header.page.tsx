@@ -60,7 +60,7 @@ const HeaderExplorePage = () => {
     return (
         <>
             {!showSearchBar && (
-                <div className="fixed top-0 left-0 bg-white z-1000 flex justify-between w-screen p-4 border-b-[1px] border-gray-200">
+                <div className="fixed top-0 left-0 bg-white dark:bg-gray-600 z-1000 flex justify-between w-screen p-4 border-b-[1px] border-gray-200">
                     <Link className="flex items-center justify-center tab-keyboard hover:scale-[105%] transition-all duration-300 ease-in-out hover:underline tab-keyboard rounded-lg px-0 md:px-3 md:py-1" href="/">
                         <div className="text-center lg:text-4xl text-lg text-wrap font-semibold">
                             <div>EXPLORE GALERY</div>
@@ -71,7 +71,7 @@ const HeaderExplorePage = () => {
                             <>
                                 {!is_detail_page && (
                                     <>
-                                        <div className={`mr-2 ${showFilter == true ? " text-blue-700 " : ""}`}>
+                                        <div className={`mr-2 ${showFilter == true ? " text-blue-700 dark:text-blue-400 " : ""}`}>
                                             <Funnel className="w-5 h-5 md:h-7 md:w-7 " onClick={handleShowFilter} />
                                         </div>
                                         <div className="text-base md:text-lg lg:text-xl">
@@ -93,17 +93,17 @@ const HeaderExplorePage = () => {
                 </div>
             )}
             {showSearchBar && (
-                <div className="fixed top-0 left-0 bg-white z-1000 flex justify-center w-screen p-4 border-b-[1px] border-gray-200">
+                <div className="fixed top-0 left-0 bg-white dark:bg-gray-500 z-1000 flex justify-center w-screen p-4 border-b-[1px] border-gray-200">
                     <div className="py-1 w-full flex justify-center items-center gap-2">
                         <Input
                             type="text"
                             placeholder="Search..."
                             value={searchTerm}
                             onChange={handleSearchTermChangeInput}
-                            className="w-[270px] !py-2 "
+                            className="w-[270px] !py-2 dark:bg-gray-200 dark:text-black hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1"
                         />
-                        <Search className="w-5 h-5 md:h-7 md:w-7 text-gray-500 hover:text-gray-700" />
-                        <X className="w-5 h-5 md:h-7 md:w-7" onClick={handleSearchClick} />
+                        <Search className="w-5 h-5 md:h-7 md:w-7 text-gray-500 dark:text-white dark:hover:text-blue-400 hover:text-gray-700" />
+                        <X className="w-5 h-5 md:h-7 md:w-7 dark:hover:text-red-400" onClick={handleSearchClick} />
                     </div>
                 </div>
             )}
