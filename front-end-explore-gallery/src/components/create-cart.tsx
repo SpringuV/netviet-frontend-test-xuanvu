@@ -5,7 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { useState } from "react";
 import { Textarea } from "./ui/textarea";
 import Alert from "./alert/alert";
-import { AlertStatus } from "@/types/type";
+import { AlertStatus, ItemType } from "@/types/type";
+import { mutate as globalMutate } from "swr";
+import { createItem } from "@/hooks/useHookItem";
 
 const categories = [
     { id: "1", name: "Nature" },
@@ -21,7 +23,7 @@ const CreateNewCart = () => {
     const [preview, setPreview] = useState<string | null>(null);
     const [alert, setAlert] = useState<{ title: string; message: string; type: AlertStatus; duration: number } | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [newItemGallery, setNewItemGallery] = useState({
+    const [newItemGallery, setNewItemGallery] = useState<ItemType>({
         title: '',
         category: '',
         image: '',
@@ -29,7 +31,7 @@ const CreateNewCart = () => {
         description: '',
         author: '',
         created_at: new Date().toISOString(),
-        like: 0,
+        likes: 0,
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,26 +43,56 @@ const CreateNewCart = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newItemGallery.title || !newItemGallery.category || !newItemGallery.image || !newItemGallery.author) {
-            setAlert({ title: "Error", message: "Please fill in all required fields", type: "error", duration: 3000 });
+        const title = newItemGallery.title.trim();
+        const category = newItemGallery.category.trim();
+        const image = newItemGallery.image.trim();
+        const author = newItemGallery.author.trim();
+        const description = newItemGallery.description.trim();
+        const tags = newItemGallery.tags.trim();
+
+        // --- Validation ---
+        if (!title) {
+            setAlert({ title: "Error", message: "Title is required", type: "error", duration: 3000 });
+            return;
+        }
+
+        if (!category) {
+            setAlert({ title: "Error", message: "Category is required", type: "error", duration: 3000 });
+            return;
+        }
+
+        // Simple URL check
+        try {
+            new URL(image);
+        } catch {
+            setAlert({ title: "Error", message: "Image URL is invalid", type: "error", duration: 3000 });
+            return;
+        }
+
+        if (!author || !/^[a-zA-Z0-9\s]+$/.test(author)) {
+            setAlert({ title: "Error", message: "Author must contain only letters and numbers", type: "error", duration: 3000 });
+            return;
+        }
+
+        if (!description) {
+            setAlert({ title: "Error", message: "Description is required", type: "error", duration: 3000 });
+            return;
+        }
+
+        if (!tags) {
+            setAlert({ title: "Error", message: "Tags are required", type: "error", duration: 3000 });
+            return;
+        }
+
+        // Kiểm tra tags: mỗi từ phân cách bằng dấu "," và chỉ chứa chữ + số
+        const tagArray = tags.split(',').map(t => t.trim()).filter(t => t.length > 0);
+        const invalidTag = tagArray.find(t => !/^[a-zA-Z0-9]+$/.test(t));
+        if (invalidTag) {
+            setAlert({ title: "Error", message: `Invalid tag: "${invalidTag}". Tags must contain only letters and numbers`, type: "error", duration: 4000 });
             return;
         }
         try {
-            const res = await fetch('http://localhost:3001/items', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newItemGallery),
-            });
-            const data = await res.json();
-            if (!data || !data.id) {
-                setAlert({
-                    title: "Error",
-                    message: "Invalid response from server",
-                    type: "error",
-                    duration: 3000
-                });
-                return;
-            }
+            await createItem(newItemGallery); // <-- SWR tự update cache
             setAlert({ title: "Success", message: "Item created", type: "success", duration: 3000 });
             // reset form
             setPreview(null);
@@ -72,7 +104,7 @@ const CreateNewCart = () => {
                 description: '',
                 author: '',
                 created_at: new Date().toISOString(),
-                like: 0,
+                likes: 0,
             });
             setSelectedCategory(null);
         } catch (err) {

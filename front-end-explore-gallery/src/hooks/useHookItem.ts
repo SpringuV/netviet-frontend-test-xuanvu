@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { PAGE_SIZE } from '@/constant'
 import { ItemType } from '@/types/type'
 import { useEffect, useState } from 'react'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import useSWRInfinite from 'swr/infinite'
+import { mutate as globalMutate } from "swr";
 
 const API_URL = process.env.NEXT_PUBLIC_URL_BACKEND
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -127,5 +129,37 @@ export function useDebounce<T>(value: T, delay: number) {
         return () => clearTimeout(handler)
     }, [value, delay])
     return debounced
+}
+
+export const createItem = async (newItem: ItemType) => {
+    const res = await fetch(`${API_URL}/items`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newItem),
+    });
+
+    const data: ItemType = await res.json();
+
+    if (!data?.id) throw new Error("Invalid response from server");
+
+    // --- swr mutate: thêm item mới vào cache ---
+    globalMutate(
+        // chỉ mutate key string có chứa /items
+        (key: any) => typeof key === "string" && key.includes("/items"),
+        (pages: any[] | any[][] | undefined) => {
+            if (!pages) return [[data]];
+            if (Array.isArray(pages[0])) {
+                // swr Infinite: pages dạng ItemType[][]
+                const firstPage = [data, ...pages[0]];
+                return [firstPage, ...pages.slice(1)];
+            } else {
+                // swr bình thường: pages dạng ItemType[]
+                return [data, ...(pages as ItemType[])];
+            }
+        },
+        false // update cache local, không revalidate
+    );
+
+    return data;
 }
 
