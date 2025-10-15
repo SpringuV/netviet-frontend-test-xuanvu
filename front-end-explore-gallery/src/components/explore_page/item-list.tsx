@@ -16,24 +16,25 @@ interface Props {
 const ItemList = ({ category, sort }: Props) => {
     const { items, setSize, hasMore, size, isLoading, isError } = useInfiniteItems(category, sort);
     const loaderRef = useRef<HTMLDivElement>(null);
-
+    const isFetchingRef = useRef(false);
     useEffect(() => {
-        const target = loaderRef.current;
-        if (!target || !hasMore) return;
+        const target = loaderRef.current; // trỏ tới phần tử cuối danh sách
+        if (!target || !hasMore) return; // Nếu chưa có phần tử target (ref chưa gán) → thoát luôn
 
         const observer = new IntersectionObserver(
             entries => {
                 const entry = entries[0];
-                if (entry.isIntersecting && !isLoading && hasMore) {
-                    setSize(size + 1);
+                if (entry.isIntersecting && !isFetchingRef.current && hasMore) {
+                    setSize(prev => prev + 1);
+                    setTimeout(() => (isFetchingRef.current = false), 1000);
                 }
             },
             { rootMargin: "300px", threshold: 0.5 }
         );
 
-        observer.observe(target);
-        return () => observer.disconnect();
-    }, [hasMore, isLoading, size, setSize]);
+        observer.observe(target); // quan sát phần tử target “hiện lên” màn hình (theo điều kiện trên) → callback entries => {...} được gọi
+        return () => observer.disconnect(); // ngắt observer khi component unmount hoặc dependencies thay đổi, để tránh rò rỉ bộ nhớ hoặc observer bị chạy lặp.
+    }, [hasMore, isLoading, setSize]);
 
     const SkeletonCard = () => (
         <div className="border rounded-lg p-4 shadow-sm space-y-3">

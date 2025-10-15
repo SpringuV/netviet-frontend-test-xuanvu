@@ -6,7 +6,7 @@ const ExploreLayout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-            <div className="w-ful h-screen overflow-auto">
+            <div className="h-screen w-screen overflow-auto">
                 <div className="mb-[64px] md:mb-[68px] lg:mb-[72px]">
                     <HeaderExplorePage />
                 </div>
