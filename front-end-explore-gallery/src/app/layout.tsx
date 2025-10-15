@@ -7,8 +7,14 @@ import ExploreLayout from "@/layout/explore.layout";
 import { ThemeProvider } from "@/components/themes-provider";
 import { SearchProvider } from "@/components/context/search.context";
 import { FilterProvider } from "@/components/context/filter.context";
+import { Inter } from 'next/font/google'
 
 config.autoAddCss = false;
+const inter = Inter({
+    subsets: ['latin'],
+    display: 'swap', // Quan trọng!
+    preload: true,
+})
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -31,7 +37,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" className={inter.className} suppressHydrationWarning>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >

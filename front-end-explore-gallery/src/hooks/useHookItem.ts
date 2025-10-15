@@ -42,7 +42,9 @@ export const useInfiniteItems = (category?: string | null, sort?: string | null)
     }
 
     const { data, error, size, setSize, isLoading, mutate } = useSWRInfinite(getKey, fetcher, {
-        revalidateOnFocus: false
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 5000, //duplicate requests
     })
 
     const items = data ? [].concat(...data) : []

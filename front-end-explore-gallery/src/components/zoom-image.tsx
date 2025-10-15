@@ -31,18 +31,14 @@ const ZoomImage = ({ zoom, setZoom, alt, source }: PropsZoomType) => {
         <>
             <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-200 z-1000"
                 onClick={() => setZoom(false)}>
-                {zoom && (
-                    <>
-                        <img src={source} loading="lazy" alt={alt} className="max-h-[90vh] max-w-[90vw] rounded-2xl" onClick={(e) => e.stopPropagation()} />
-                        <button
-                            onClick={() => setZoom(false)}
-                            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
-                            aria-label="Close"
-                        >
-                            <X />
-                        </button>
-                    </>
-                )}
+                <img src={source} loading="lazy" alt={alt} className="max-h-[90vh] max-w-[90vw] rounded-2xl" onClick={(e) => e.stopPropagation()} />
+                <button
+                    onClick={() => setZoom(false)}
+                    className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
+                    aria-label="Close"
+                >
+                    <X />
+                </button>
             </div>
         </>
     )
